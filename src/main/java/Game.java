@@ -1,14 +1,15 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Game {
 
     // все зарегистрированные игроки хранятся в виде списка
-    List<Player> registeredPlayers = new ArrayList<>();
+    HashMap<String, Player> map = new HashMap<>();
 
     // метод регистрации игрока
     public void register(Player player) {
-        registeredPlayers.add(player);
+        map.put(player.getName(), player);
     }
 
     // метод сореевнования между двумя игроками
@@ -17,21 +18,15 @@ public class Game {
         Player player1 = null;
         Player player2 = null;
 
-        for (Player player : registeredPlayers) {
-            if (player.getName().equals(playerName1)) {
-                player1 = player;
-            }
-            if (player.getName().equals(playerName2)) {
-                player2 = player;
-            }
-        }
-
-        if (player1 == null) {
+        if (!map.containsKey(playerName1)) {
             throw new NotRegisteredException(playerName1);
         }
-        if (player2 == null) {
+        if (!map.containsKey(playerName2)) {
             throw new NotRegisteredException(playerName2);
         }
+
+        player1 = map.get(playerName1);
+        player2 = map.get(playerName2);
 
         if (player1.getStrength() > player2.getStrength()) {
             return 1;
